@@ -50,6 +50,7 @@ RUN set -x && \
   docker-php-ext-install -j${NPROC} pdo_mysql && \
   docker-php-ext-install -j${NPROC} pdo && \
   docker-php-ext-install -j${NPROC} mbstring && \
+  docker-php-ext-install -j${NPROC} bcmath && \
   apk del --no-cache --purge build-dependencies && \
   rm -rf /tmp/pear
 
