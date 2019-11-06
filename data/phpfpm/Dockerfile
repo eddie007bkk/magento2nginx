@@ -45,12 +45,14 @@ RUN set -x && \
   apk add --no-cache icu-libs && \
   apk add --no-cache --virtual build-dependencies && \
   NPROC=$(grep -c ^processor /proc/cpuinfo 2>/dev/null || 1) && \
+  docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
   docker-php-ext-install -j${NPROC} intl && \
   docker-php-ext-install -j${NPROC} mysqli && \
   docker-php-ext-install -j${NPROC} pdo_mysql && \
   docker-php-ext-install -j${NPROC} pdo && \
   docker-php-ext-install -j${NPROC} mbstring && \
   docker-php-ext-install -j${NPROC} bcmath && \
+  docker-php-ext-install -j${NPROC} gd && \
   apk del --no-cache --purge build-dependencies && \
   rm -rf /tmp/pear
 
