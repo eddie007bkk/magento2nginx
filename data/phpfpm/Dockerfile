@@ -45,13 +45,11 @@ RUN set -x && \
   apk add --no-cache icu-libs && \
   apk add --no-cache --virtual build-dependencies && \
   NPROC=$(grep -c ^processor /proc/cpuinfo 2>/dev/null || 1) && \
-  docker-php-ext-configure pdo_oci --with-pdo-oci=instantclient,/opt/oracle/instantclient_12_1,12.1 && \
   docker-php-ext-install -j${NPROC} intl && \
   docker-php-ext-install -j${NPROC} mysqli && \
   docker-php-ext-install -j${NPROC} pdo_mysql && \
   docker-php-ext-install -j${NPROC} pdo && \
   docker-php-ext-install -j${NPROC} mbstring && \
-  docker-php-ext-enable oci8 && \
   apk del --no-cache --purge build-dependencies && \
   rm -rf /tmp/pear
 
