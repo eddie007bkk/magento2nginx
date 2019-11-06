@@ -1,6 +1,7 @@
 version: '2'
 services:
   mysql:
+    container_name: mysql
     restart: always
     build: ./data/mysql/
     ports:
@@ -14,6 +15,7 @@ services:
       MYSQL_DATABASE: my_app
       TZ: "Asia/Tokyo"
   nginx:
+    container_name: nginx
     restart: always
     image: "nginx:mainline-alpine"
     ports:
@@ -29,6 +31,7 @@ services:
     links:
       - phpfpm
   phpfpm:
+    container_name: phpfpm
     restart: always
     build: ./data/phpfpm/
     ports:
@@ -43,4 +46,3 @@ services:
       - mysql
     links:
       - mysql
-
