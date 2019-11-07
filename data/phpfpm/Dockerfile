@@ -1,5 +1,4 @@
-FROM php:7.2.4-fpm-alpine
-
+FROM php:7.3-fpm-alpine
 LABEL maintainer="Y.Sakai @ Bluemoon inc."
 
 ADD     http://downloads3.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz /tmp/
@@ -30,6 +29,7 @@ RUN     apk update                       && \
             icu                             \
             icu-dev                         \
             libxml2-dev                     \
+            php-soap                        \
             freetype-dev                    \
             libjpeg-turbo-dev               \
             libpng-dev                      \
@@ -39,8 +39,10 @@ RUN     apk update                       && \
             imagemagick-dev                 \
             libssh2                         \
             libssh2-dev                     \
-            libxslt-dev
-
+            libxslt-dev                     \
+            zip                             \
+            libzip-dev                      \
+            unzip
 RUN set -x && \
   apk add --no-cache icu-libs && \
   apk add --no-cache --virtual build-dependencies && \
@@ -53,18 +55,13 @@ RUN set -x && \
   docker-php-ext-install -j${NPROC} mbstring && \
   docker-php-ext-install -j${NPROC} bcmath && \
   docker-php-ext-install -j${NPROC} gd && \
+  docker-php-ext-install -j${NPROC} xml && \
+  docker-php-ext-install -j${NPROC} soap && \
+  docker-php-ext-install -j${NPROC} xsl && \
+  docker-php-ext-install -j${NPROC} zip && \
   apk del --no-cache --purge build-dependencies && \
   rm -rf /tmp/pear
 
-
-## For ZIP and SSH
-RUN wget "https://github.com/Sean-Der/pecl-networking-ssh2/archive/php7.zip" \
-    && unzip php7.zip \
-    && cd pecl-networking-ssh2-php7 \
-    && phpize \
-    && ./configure \
-    && make && make install \
-    && docker-php-ext-enable ssh2
 
 ## set user
 RUN set -x && \
