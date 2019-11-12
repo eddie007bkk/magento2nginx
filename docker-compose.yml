@@ -36,8 +36,6 @@ services:
       - "9000:9000"
     environment:
       TZ: "Asia/Tokyo"
-      ORACLE_HOME: /opt/oracle
-      LD_LIBRARY_PATH: /opt/oracle/lib
     volumes:
       - "./data/htdocs:/var/www/html"
     depends_on:
