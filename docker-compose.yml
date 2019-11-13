@@ -14,6 +14,7 @@ services:
       MYSQL_PASSWORD: secret
       MYSQL_DATABASE: my_app
       TZ: "Asia/Tokyo"
+
   nginx:
     container_name: nginx
     restart: always
@@ -28,6 +29,7 @@ services:
       - phpfpm
     links:
       - phpfpm
+
   phpfpm:
     container_name: phpfpm
     restart: always
@@ -42,3 +44,17 @@ services:
       - mysql
     links:
       - mysql
+
+  # phpMyAdmin
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOSTS=mysql
+      - PMA_USER=root
+      - PMA_PASSWORD=password
+    ports:
+      - 8085:80
+    depends_on:
+      - "mysql"
