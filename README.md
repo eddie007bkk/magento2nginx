@@ -1,7 +1,7 @@
-# Docker/CakeOracle
+# Magento2nginx
 
-Docker for Mac を利用して CakePHP3 + MySQL の環境を構築します。
-Mac用ですので、Windowsは適宜読み替えてください。
+This project is build docker images for Magento2 that useing nginx and php-fpm.
+Not only local enviroment but also build Multi-binary for Asia charactors.
 
 # Required
 
@@ -9,15 +9,12 @@ Mac用ですので、Windowsは適宜読み替えてください。
 
 # Environment
 
-* Mac OS X 10.13
-* Docker Version 18.06.0-ce-mac70
-* Docker compose 1.22
-* Docker Machine 0.15
+* Magento2.3
+* PHP7.3
+* MySql5.7
+* phpMyAdmin4.9
 
 # How To Run
-
-docker-compose を使って、イメージのビルド・コンテナ生成を行ってCakePHPのサンプルコードを動かすまでのチュートリアルです。
-data/htdocsが初期のドキュメントルートになります。
 
 ## コンテナを実行してサンプル・プロジェクトを作成
 ```bash
@@ -28,35 +25,7 @@ docker-compose up -d
 docker ps
 
 # phpコンテナへ入る
-docker exec -it cakeoracle_phpfpm_1 /bin/sh
-
-# phpコンテナにcomposerをインストールする
-curl -s https://getcomposer.org/installer | php
-
-# 動作確認用のサンプルプロジェクト生成
-php composer.phar create-project --prefer-dist cakephp/app bookmarker
-exit
-```
-
-## サンプルプロジェクトをドキュメントルートに変更
-```angular2html
-$ docker-compose down
-# ./data/nginx/conf/conf.d/default.conf の以下を設定
-    #root        /var/www/html;
-    root        /var/www/html/bookmarker/webroot;
-$ docker-compose up
-```
-## ブラウザで確認
-http://localhost
-
-## MySQLの接続について
-ドキュメントルートにphpMyAdminを置くと mysql の接続確認が楽にできます。
-
-config.inc.php にDockerのコンテナ名を記載すれば、動作します。
-```angular2html
-$cfg['Servers'][$i]['host'] = 'cakeoracle_mysql_1';
-
-```
+docker exec -it nginx /bin/sh
 
 
 # License
