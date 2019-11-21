@@ -16,17 +16,27 @@ Not only local enviroment but also build Multi-binary for Asia charactors.
 
 # How To Run
 
-## コンテナを実行してサンプル・プロジェクトを作成
 ```bash
-# イメージ生成・コンテナ作成・実行
-docker-compose up -d
+# Build and run your container
+docker-compose up
 
-＃実行中のコンテナ確認
+# Open other ssh window
+＃ List up your runnig container
 docker ps
 
-# phpコンテナへ入る
+# ssh login to php container
 docker exec -it nginx /bin/sh
 
+# install composer
+curl -sS https://getcomposer.org/installer -o composer-setup.php
+php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+
+# install magento ( you have to get account at magento.com )
+composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition /var/www/html/magento
+Username: [YOUR-PUBLIC-KEY]
+Password: [YOUR-PRIVATE-KEY]
+
+```
 
 # License
 
