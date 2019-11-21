@@ -62,6 +62,8 @@ RUN set -x && \
   apk del --no-cache --purge build-dependencies && \
   rm -rf /tmp/pear
 
+## copy php.ini
+ADD php.ini /usr/local/etc/php/php.ini
 
 ## set user
 RUN set -x && \
