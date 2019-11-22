@@ -65,6 +65,8 @@ RUN set -x && \
 ## copy php.ini
 ADD php.ini /usr/local/etc/php/php.ini
 
+RUN chmod -R 777 /var/www/html
+
 ## set user
 RUN set -x && \
   deluser www-data && \

@@ -6,6 +6,7 @@ services:
     build: ./data/mysql/
     ports:
       - "3306:3306"
+    user: "1000:50"
     volumes:
       - "./data/mysql/db:/var/lib/mysql"
     environment:
