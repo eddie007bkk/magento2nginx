@@ -67,6 +67,9 @@ $ sudo curl -L https://github.com/docker/compose/releases/download/1.25.0/docker
 # set permission for runnnig binary
 $ sudo chmod +x /usr/local/bin/docker-compose
 
+# Download magent2 docker setting files from github
+git clone git@github.com:bluemooninc/magento2nginx.git
+[vagrant@localhost ~]$ cd magento2docker
 [vagrant@localhost ~]$ docker-compose up
 ```
 
@@ -123,7 +126,11 @@ php bin/magento cron:install
 # make sure
 crontab -e
 
+# reindex
 php bin/magento indexer:reindex
+
+# cache clear
+php bin/magento cache:flush
 
 # download sample data
 php bin/magento sampledata:deploy
