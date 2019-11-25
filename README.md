@@ -1,7 +1,10 @@
 # Magento2nginx
 
 This project is build docker images for Magento2 that useing nginx and php-fpm.
-Not only local enviroment but also build Multi-binary for Asia charactors.
+Not only local enviroment but also build Multi-binary for Japan,Korea,China and Russia charactors.
+
+Memo: Do NOT use 'docker for macintosh'. mac os file system and docker share holder is really slow.
+I strongly recommend use VirtualBox and Vagrant launch linux(CentOS etc.) for Docker base.
 
 # Required
 
@@ -34,32 +37,51 @@ Vagrant.configure("2") do |config|
   # Up to memory 8G Byte
   config.vm.provider "virtualbox" do |v|
     v.memory = 8192
-    v.cpus = 2
+    v.cpus = 4
   end
-
+  #
   # Make Docker available on the VM from the beginning
+  #  
   config.vm.provision "docker"
 
   # Port forwarding to the host side so that you can browse the web screen and phpMyAdmin
   config.vm.network "private_network", ip: "172.12.8.150"
   config.vm.network "forwarded_port", host: 80, guest: 80 # Magento
   config.vm.network "forwarded_port", host: 8085, guest: 8085 # phpMyAdmin
-
-  # Share files such as docker-compose.yml on the host side for reference in the VM
-  config.vm.synced_folder "/Users/sakai/dev", "/home/vagrant/dev", type: "nfs"
+  #
+  # Share your project folder which has docker-compose.yml to vagrant home folder
+  # ( Edit home dir for your enviroment. )
+  config.vm.synced_folder "/Users/sakai/dev/magento2nginx", "/home/vagrant/magento2nginx", type: "nfs"
 end
 ---
+##
+## How to use
+##
 $ vagrant up
 $ vagrant ssh
-[vagrant@localhost ~]$ cd dev
+
+# download newest Docker Compose
+# Change `1.17.1` for the version (Check https://github.com/docker/compose/releases)
+$ sudo curl -L https://github.com/docker/compose/releases/download/1.25.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+
+# set permission for runnnig binary
+$ sudo chmod +x /usr/local/bin/docker-compose
+
+[vagrant@localhost ~]$ docker-compose up
 ```
 
 # Environment
 
 * Magento2.3
 * PHP7.3
+  # php.ini ( Edit for your timezone )
+  date.timezone = Aisa/Tokyo
 * MySql5.7
 * phpMyAdmin4.9
+* Docker
+  # docker-compose.yml ( Edit for your timezone )
+      environment:
+        TZ: "Asia/Tokyo"
 
 # How To Run
 
@@ -107,6 +129,11 @@ php bin/magento indexer:reindex
 php bin/magento sampledata:deploy
 # Setup sample data
 php bin/magento setup:upgrade
+
+
+docker-compose down
+vagrant halt
+bye!!!
 
 # License
 
