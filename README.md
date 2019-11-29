@@ -48,6 +48,7 @@ Vagrant.configure("2") do |config|
   config.vm.network "private_network", ip: "172.12.8.150"
   config.vm.network "forwarded_port", host: 80, guest: 80 # Magento
   config.vm.network "forwarded_port", host: 8085, guest: 8085 # phpMyAdmin
+  config.vm.network "forwarded_port", host: 1080, guest: 1080 # mailCatcher
   #
   # Share your project folder which has docker-compose.yml to vagrant home folder
   # ( Edit home dir for your enviroment. )
@@ -103,7 +104,9 @@ docker exec -it phpfpm /bin/sh
 curl -sS https://getcomposer.org/installer -o composer-setup.php
 php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 
+#
 # install magento ( you have to get account at magento.com )
+#
 composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition /var/www/html/magento
 Username: [YOUR-PUBLIC-KEY]
 Password: [YOUR-PRIVATE-KEY]

@@ -62,6 +62,17 @@ RUN set -x && \
   apk del --no-cache --purge build-dependencies && \
   rm -rf /tmp/pear
 
+## For mail catcher
+RUN apk --no-cache --update add \
+    libstdc++ \
+    build-base \
+    openssl-dev \
+    sqlite \
+    sqlite-dev \
+    ruby-rdoc \
+    ruby-dev && \
+    gem install mailcatcher -N
+
 ## copy php.ini
 ADD php.ini /usr/local/etc/php/php.ini
 
