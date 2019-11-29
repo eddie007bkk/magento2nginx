@@ -14,6 +14,7 @@ https://www.virtualbox.org/
 * Vagrant
 https://www.vagrantup.com/
 
+## Setup Vagrant
 ```
 $ vagrant box add centos/7
 
@@ -74,20 +75,39 @@ git clone git@github.com:bluemooninc/magento2nginx.git
 [vagrant@localhost ~]$ docker-compose up
 ```
 
-# Environment
+## Setup Docker
+
+### Environment
 
 * Magento2.3
+
+  Magento front http://localhost
+
+  Magento admin http://localhost/admin/ ( depend your setup )
 * PHP7.3
-  # php.ini ( Edit for your timezone )
-  date.timezone = Aisa/Tokyo
+  
+  Customise at ./data/phpfpm/php.ini ( Edit for your timezone )
+  
+  date.timezone = Asia/Tokyo
 * MySql5.7
 * phpMyAdmin4.9
+
+  Database GUI http://localhost:8085
+* mailCatcher
+
+  mailCatcher is a internal use SMTP server witch has client GUI.
+
+  You may check any sendmail from Magento service.
+
+  mail Client GUI is http://localhost:1080
 * Docker
-  # docker-compose.yml ( Edit for your timezone )
+
+  docker-compose.yml ( Edit for your timezone )
+
       environment:
         TZ: "Asia/Tokyo"
 
-# How To Run
+### How To Run
 
 ```bash
 # Build and run your container
@@ -115,9 +135,12 @@ chmod -R 777 /var/www/html
 
 ```
 
+# Create database
 
-
+at phpMyAdmin ( http://localhost:8085 )
+```
 CREATE DATABASE magento DEFAULT CHARACTER SET utf8mb4;
+```
 
 host: mysql
 ID: root
