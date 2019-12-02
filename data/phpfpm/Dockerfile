@@ -44,7 +44,7 @@ RUN     apk update                       && \
             libzip-dev                      \
             unzip
 RUN set -x && \
-  apk add --no-cache icu-libs && \
+  apk add --no-cache icu-l\
   apk add --no-cache --virtual build-dependencies && \
   NPROC=$(grep -c ^processor /proc/cpuinfo 2>/dev/null || 1) && \
   docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
