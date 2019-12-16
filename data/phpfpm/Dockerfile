@@ -1,8 +1,6 @@
 FROM php:7.3-fpm-alpine
 LABEL maintainer="Y.Sakai @ Bluemoon inc."
 
-ADD     http://downloads3.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz /tmp/
-
 RUN     apk update                       && \
         \
         apk upgrade                      && \
@@ -15,6 +13,8 @@ RUN     apk update                       && \
                 zlib-dev                    \
                 cyrus-sasl-dev              \
                 git                         \
+                nginx                       \
+                supervisor                  \
                 autoconf                    \
                 g++                         \
                 libtool                     \
@@ -44,7 +44,6 @@ RUN     apk update                       && \
             libzip-dev                      \
             unzip
 RUN set -x && \
-  apk add --no-cache icu-l\
   apk add --no-cache --virtual build-dependencies && \
   NPROC=$(grep -c ^processor /proc/cpuinfo 2>/dev/null || 1) && \
   docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
@@ -75,12 +74,22 @@ RUN apk --no-cache --update add \
 
 ## copy php.ini
 ADD php.ini /usr/local/etc/php/php.ini
+ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+ADD default.magento.conf /etc/nginx/nginx.conf
+ADD fastcgi.conf /etc/nginx/fastcgi.conf
+ADD run.sh /run.sh
+RUN chmod +x /run.sh
 
 RUN chmod -R 777 /var/www/html
-
+RUN sed -i "s/nginx:x:100:101:nginx:\/var\/lib\/nginx:\/sbin\/nologin/nginx:x:100:101:nginx:\/var\/www\/html:\/bin\/bash/g" /etc/passwd && \
+    sed -i "s/nginx:x:100:101:nginx:\/var\/lib\/nginx:\/sbin\/nologin/nginx:x:100:101:nginx:\/var\/www\/html:\/bin\/bash/g" /etc/passwd-
 ## set user
 RUN set -x && \
   deluser www-data && \
   addgroup -g 50 -S www-data && \
   adduser -u 1000 -D -S -G www-data www-data
-VOLUME /etc/tnsnames.ora
+#VOLUME /etc/tnsnames.ora
+VOLUME /var/www/html
+EXPOSE 80
+# CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+CMD ["/run.sh"]
